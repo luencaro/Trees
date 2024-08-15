@@ -9,14 +9,15 @@ package core.Tree;
  * @author lcabarcase
  */
 public class Tree {
-    Node Root;
-    
+
+    public Node Root;
+
     public Tree() {
         this.Root = null;
     }
-    
+
     public void Add(int data) {
-        
+
         Node node = new Node(data);
         if (Root == null) {
             Root = node;
@@ -24,66 +25,110 @@ public class Tree {
             AddRecursively(Root, node);
         }
     }
-    
-    public void AddRecursively(Node node, Node newnode){
-        
+
+    public void AddRecursively(Node node, Node newnode) {
+
         if (node.data > newnode.data) {
-            if (node.Left == null){
-                node.Left = newnode;
+            if (node.left == null) {
+                node.left = newnode;
             } else {
-                AddRecursively(node.Left, newnode);
+                AddRecursively(node.left, newnode);
             }
         } else {
-            if (node.Right == null){
-                node.Right = newnode;
+            if (node.right == null) {
+                node.right = newnode;
             } else {
-                AddRecursively(node.Right, newnode);
+                AddRecursively(node.right, newnode);
             }
         }
     }
-    
-    public void imprimir (Node n1 ,int lvl ){
-        if ( n1 != null ){
-            imprimir ( n1.Right , lvl+1 );
-            for (int i = 0; i < lvl; i++){
-                System.out.print ("      ");
+
+    public void imprimir(Node n1, int lvl) {
+        if (n1 != null) {
+            imprimir(n1.right, lvl + 1);
+            for (int i = 0; i < lvl; i++) {
+                System.out.print("      ");
             }
-            System.out.println(n1.data );
-            imprimir (n1.Left , lvl+1 );
-           
+            System.out.println(n1.data);
+            imprimir(n1.left, lvl + 1);
+
         }
     }
-    
+
     public void PreOrder(Node node) {
-        
+
         if (node == null) {
             return;
         }
         System.out.print(node.data + " -> ");
-        PreOrder(node.Left);
-        PreOrder(node.Right);
-    
+        PreOrder(node.left);
+        PreOrder(node.right);
+
     }
-    
+
     public void InOrder(Node node) {
-        
+
         if (node == null) {
             return;
         }
-        InOrder(node.Left);
+        InOrder(node.left);
         System.out.print(node.data + " -> ");
-        InOrder(node.Right);
-    
+        InOrder(node.right);
+
     }
-    
+
     public void PosOrder(Node node) {
-        
+
         if (node == null) {
             return;
         }
-        PosOrder(node.Left);
-        PosOrder(node.Right);
+        PosOrder(node.left);
+        PosOrder(node.right);
         System.out.print(node.data + " -> ");
-    
+
     }
+
+    public int sum(Node node) {
+        if (node == null) {
+            return 0;
+        }
+
+        return node.data + sum(node.left) + sum(node.right);
+    }
+
+    public boolean search(int value, Node node) {
+        if (node == null) {
+            return false;
+        }
+
+        if (value == node.data) {
+            return true;
+        } else {
+            if (value < node.data) {
+                return search(value, node.left);
+            } else {
+                return search(value, node.right);
+            }
+        }
+    }
+    
+    public int height(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        
+        return Math.max(height(node.left), height(node.right));
+    }
+    
+    public boolean isCompleted (Node node, int lvl, int n) {
+        if (node == null) {
+            return false;
+        }
+        
+        if(lvl >= n) {
+            return false;
+        }
+        
+        return isCompleted(node.left, 2*lvl + 1, n) && isCompleted(node.right , 2*lvl+1, n);
+    } 
 }
